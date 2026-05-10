@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Медитация «Один день» — irena.bio</title>
 <script src="telegram-web-app.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Raleway:wght@200;300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Raleway:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width:100%; height:100%; background:#080300; overflow:hidden; font-family:'Raleway',sans-serif; touch-action:manipulation; }
@@ -20,14 +20,122 @@
     pointer-events:none;
   }
 
+  .header-wrap {
+    display:flex; flex-direction:column; align-items:center; gap:6px; width:100%;
+  }
   .title {
     font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:300;
-    font-size:clamp(1.2rem,4.5vw,1.8rem);
-    letter-spacing:0.14em;
-    color:rgba(255,220,150,0.9);
-    text-shadow:0 2px 10px rgba(0,0,0,1), 0 0 25px rgba(255,140,30,0.5);
-    text-align:center; width:100%; padding:0 16px;
+    font-size:clamp(1.6rem,6.5vw,2.4rem);
+    color:#ffd060;
+    text-align:center;
+    text-shadow:0 2px 10px rgba(0,0,0,1), 0 0 25px rgba(0,0,0,0.6);
   }
+  .subtitle {
+    font-family:'Raleway',sans-serif; font-weight:400;
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    color:#a89970;
+    text-shadow:0 1px 4px rgba(0,0,0,0.9);
+  }
+
+  .info-block {
+    pointer-events:all;
+    width:100%; max-width:380px;
+    display:flex; flex-direction:column; align-items:center;
+    gap:10px; text-align:center;
+    background:rgba(0,0,0,0.78);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+    border-radius:18px;
+    padding:18px 20px;
+  }
+  .info-intro {
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:14px;
+    color:#d4b870;
+    font-weight:400;
+  }
+  .info-list {
+    list-style:none; padding:0; margin:0;
+    display:flex; flex-direction:column; gap:7px;
+    font-family:'Raleway',sans-serif;
+    font-weight:500;
+    font-size:14px; line-height:1.4;
+    color:#f0e0c4;
+    text-align:left;
+    width:100%;
+  }
+  .info-list li {
+    position:relative;
+    padding-left:18px;
+  }
+  .info-list li::before {
+    content:"·";
+    color:#ffd060;
+    font-weight:700;
+    position:absolute;
+    left:4px;
+    top:0;
+  }
+  .info-details {
+    display:none;
+    margin-top:4px;
+    font-family:'Raleway',sans-serif;
+    font-weight:400;
+    font-size:13px; line-height:1.6;
+    color:#e8d4a8;
+    text-align:left;
+  }
+  .info-details p { margin-bottom:8px; text-align:left; }
+  .info-details p:last-child { margin-bottom:0; }
+  .recommend {
+    margin-top:10px;
+    padding:12px 14px;
+    background:rgba(255,208,96,0.1);
+    border:1px solid rgba(255,208,96,0.3);
+    border-radius:10px;
+    font-family:'Raleway',sans-serif;
+    font-weight:400;
+    font-size:13px; line-height:1.5;
+    color:#f0e0c4;
+    text-align:left;
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .warning-block {
+    margin-top:4px;
+    padding:10px 12px;
+    background:rgba(220,140,80,0.12);
+    border:1px solid rgba(220,140,80,0.4);
+    border-left:3px solid #e89060;
+    border-radius:8px;
+    font-family:'Raleway',sans-serif;
+    font-weight:400;
+    font-size:12px;
+    line-height:1.5;
+    color:#f0d4b0;
+    text-align:left;
+    width:100%;
+  }
+  .warning-block strong {
+    color:#ffb060;
+    font-weight:600;
+  }
+  .info-toggle {
+    background:none; border:none; cursor:pointer;
+    color:#ffd060;
+    font-family:'Raleway',sans-serif;
+    font-weight:500;
+    font-size:13px;
+    padding:8px 14px;
+    -webkit-tap-highlight-color:transparent;
+    letter-spacing:0.04em;
+  }
+
+  body.details-open .info-details { display:block; }
+  body.session-active .info-block,
+  body.session-active .subtitle { display:none; }
 
   .bottom {
     pointer-events:all;
@@ -153,7 +261,31 @@
 </audio>
 
 <div class="screen">
-  <div class="title">Медитация «Один день»</div>
+  <div class="header-wrap">
+    <div class="title">Один день</div>
+    <div class="subtitle">25 МИН · ЦЕННОСТЬ МОМЕНТА</div>
+  </div>
+
+  <div class="info-block" id="infoBlock">
+    <div class="info-intro">Медитация для тех, кто хочет:</div>
+    <ul class="info-list">
+      <li>Снова почувствовать вкус и радость жизни</li>
+      <li>Перестать жить на автопилоте</li>
+      <li>Ощутить ценность того, что уже есть</li>
+    </ul>
+    <div class="info-details">
+      <p>Эта практика приведёт тебя в момент, когда тебе 90 лет и ты смотришь назад на свою жизнь. После неё настоящее начинает ощущаться иначе - ярче, теплее, своим. Возможно, будет много слёз.</p>
+      <div class="recommend">
+        <span>🔁</span>
+        <span>Это не ежедневная медитация. Рекомендуется 1-2 раза в месяц когда ощущаешь что перестала ценить то что есть.</span>
+      </div>
+    </div>
+    <div class="warning-block">
+      <strong>⚠ Важно:</strong> не делай в период острого стресса, тревожности, депрессии, после потери близкого или при приёме антидепрессантов.
+    </div>
+    <button class="info-toggle" id="infoToggle" type="button">↓ Подробнее</button>
+  </div>
+
   <div class="bottom">
     <button class="btn" id="mainBtn">Старт</button>
     <div class="progress-wrap" id="pw">
@@ -339,11 +471,13 @@ class Spark {
 }
 const sparks = Array.from({length:70},()=>new Spark());
 let t=0;
+let flowerScale = 1, flowerTarget = 1;
 
 function drawFrame() {
   t+=0.006;
   ctx.fillStyle='rgba(8,3,0,0.22)'; ctx.fillRect(0,0,W,H);
-  const R=S*0.38;
+  flowerScale += (flowerTarget - flowerScale) * 0.08;
+  const R=S*0.38*flowerScale;
   ctx.save(); ctx.globalCompositeOperation='screen';
   const halo=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.4);
   halo.addColorStop(0,`rgba(160,60,0,${0.12+0.05*Math.sin(t*0.7)})`);
@@ -391,6 +525,13 @@ const repeatBtn = document.getElementById('repeatBtn');
 const track     = document.getElementById('progressTrack');
 const skipBack  = document.getElementById('skipBack');
 const skipFwd   = document.getElementById('skipFwd');
+const infoToggle = document.getElementById('infoToggle');
+
+infoToggle.addEventListener('click', function() {
+  const open = document.body.classList.toggle('details-open');
+  flowerTarget = open ? 0.75 : 1;
+  infoToggle.textContent = open ? '↑ Свернуть' : '↓ Подробнее';
+});
 
 let mode = 'start';
 let rafAudio = null;
@@ -448,6 +589,7 @@ skipFwd.addEventListener('click',  () => skip(15));
 mainBtn.addEventListener('click', function() {
   if (mode === 'start') {
     mode = 'playing'; elapsed = 0; lastTs = null;
+    document.body.classList.add('session-active');
     pw.style.display = 'flex';
     mainBtn.textContent = 'Пауза';
     audio.currentTime = 0; audio.volume = 0;
@@ -470,6 +612,7 @@ repeatBtn.addEventListener('click', function() {
   fin.classList.remove('show');
   pf.style.width='0%'; pw.style.display='none';
   mainBtn.textContent='Старт';
+  document.body.classList.remove('session-active');
 });
 
 
